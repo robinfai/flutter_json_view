@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_json_view/flutter_json_view.dart';
 import 'package:flutter_json_view/src/builders/builders.dart';
+import 'package:flutter_json_view/src/builders/json_path.dart';
 import 'package:flutter_json_view/src/utils/utils.dart';
 
 class JsonLoaderItem extends StatefulWidget {
@@ -36,6 +37,7 @@ class _JsonLoaderItemState extends State<JsonLoaderItem> {
       _commonBuilder = CommonJsonViewBuilder(
         json,
         jsonViewTheme: widget.jsonViewTheme,
+        jsonPath: JsonPath(path: null),
       );
     });
   }

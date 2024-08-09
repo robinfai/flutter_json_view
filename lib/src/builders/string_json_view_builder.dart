@@ -1,16 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_json_view/src/builders/json_path.dart';
 import 'package:flutter_json_view/src/theme/json_view_theme.dart';
 import 'package:flutter_json_view/src/utils/utils.dart';
 
 import 'builders.dart';
 
 class StringJsonViewBuilder implements JsonViewBuilder {
-  StringJsonViewBuilder(this.jsonString, {JsonViewTheme? jsonViewTheme})
+  StringJsonViewBuilder(this.jsonString,
+      {JsonViewTheme? jsonViewTheme, this.jsonKey})
       : _commonBuilder = CommonJsonViewBuilder(
           JsonConverter.jsonStringToObject(jsonString),
           jsonViewTheme: jsonViewTheme ?? const JsonViewTheme(),
+          jsonPath: JsonPath(path: null),
+          jsonKey: jsonKey,
         );
 
+  final String? jsonKey;
   final String jsonString;
   final JsonViewBuilder _commonBuilder;
 

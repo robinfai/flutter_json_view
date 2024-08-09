@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_json_view/src/builders/builders.dart';
+import 'package:flutter_json_view/src/builders/json_path.dart';
 import 'package:flutter_json_view/src/theme/json_view_theme.dart';
 
 import 'widgets/base_json_view.dart';
@@ -54,6 +55,7 @@ class JsonView extends StatefulWidget {
         _builder = MapJsonViewBuilder(
           map,
           jsonViewTheme: theme,
+          jsonPath: JsonPath(path: null),
         ),
         super(key: key);
 

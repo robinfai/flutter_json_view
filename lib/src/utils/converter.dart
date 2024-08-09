@@ -2,11 +2,11 @@ import 'dart:convert';
 
 abstract class JsonConverter {
   static dynamic jsonStringToObject(String jsonString) {
-    assert(canConverToObject(jsonString));
+    assert(canConvertToObject(jsonString));
     return json.decode(jsonString);
   }
 
-  static bool canConverToObject(String jsonString) {
+  static bool canConvertToObject(String jsonString) {
     try {
       if (json.decode(jsonString) is Map<String, dynamic>) {
         return true;

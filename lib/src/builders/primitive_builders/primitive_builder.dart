@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_json_view/src/builders/consts.dart';
+import 'package:flutter_json_view/src/builders/json_path.dart';
 import 'package:flutter_json_view/src/theme/json_view_theme.dart';
 import 'package:flutter_json_view/src/widgets/widgets.dart';
 
@@ -7,15 +9,40 @@ class PrimitiveBuilder extends StatelessWidget {
     this.jsonObj, {
     Key? key,
     required JsonViewTheme jsonViewTheme,
+    this.jsonKey,
+    required this.jsonPath,
   })  : _jsonViewTheme = jsonViewTheme,
         super(key: key);
 
+  final JsonPath jsonPath;
+  final String? jsonKey;
   final dynamic jsonObj;
   final JsonViewTheme _jsonViewTheme;
 
+  Widget buildObjectKey() {
+    if (jsonKey != null) {
+      return Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        SelectableText(jsonKey!, style: _jsonViewTheme.keyStyle),
+        JsonViewSeparator(jsonViewTheme: _jsonViewTheme)
+      ]);
+    }
+    return Container();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return _renderJsonWidgets(context);
+    return Padding(
+      padding: EdgeInsets.only(left: _jsonViewTheme.defaultTextStyle.fontSize!),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          buildObjectKey(),
+          _renderJsonWidgets(context),
+          SelectableText(jsonPath.path != null ? comma : '',
+              style: _jsonViewTheme.keyStyle),
+        ],
+      ),
+    );
   }
 
   Widget _renderJsonWidgets(BuildContext context) {
@@ -38,6 +65,11 @@ class PrimitiveBuilder extends StatelessWidget {
       return PrimitiveJsonItem(
         jsonObj: jsonObj,
         textStyle: _jsonViewTheme.boolStyle,
+      );
+    } else if (jsonObj == null) {
+      return PrimitiveJsonItem(
+        jsonObj: 'null',
+        textStyle: _jsonViewTheme.nullStyle,
       );
     }
     return _jsonViewTheme.errorBuilder?.call(context, jsonObj) ??

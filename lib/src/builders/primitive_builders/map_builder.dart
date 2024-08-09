@@ -1,63 +1,60 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_json_view/src/builders/consts.dart';
+import 'package:flutter_json_view/src/builders/json_path.dart';
+import 'package:flutter_json_view/src/builders/primitive_builders/iterate_builder.dart';
 import 'package:flutter_json_view/src/theme/json_view_theme.dart';
 import 'package:flutter_json_view/src/widgets/widgets.dart';
 
-class JsonMapBuilder extends StatefulWidget {
+class JsonMapBuilder extends IterateBuilder<Map<String, dynamic>> {
   const JsonMapBuilder({
     Key? key,
-    required this.jsonObj,
-    required this.jsonViewTheme,
-  }) : super(key: key);
-
-  final Map<String, dynamic> jsonObj;
-  final JsonViewTheme jsonViewTheme;
+    required JsonPath jsonPath,
+    required Map<String, dynamic> jsonObj,
+    required JsonViewTheme jsonViewTheme,
+    String? jsonKey,
+  }) : super(
+          key: key,
+          jsonPath: jsonPath,
+          jsonObj: jsonObj,
+          jsonViewTheme: jsonViewTheme,
+          brackets: const IterateBrackets(
+              left: curlyBracesLeft, right: curlyBracesRight),
+          jsonKey: jsonKey,
+        );
 
   @override
-  State<JsonMapBuilder> createState() => _JsonMapBuilderState();
-}
-
-class _JsonMapBuilderState extends State<JsonMapBuilder> {
-  bool isOpened = true;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        GestureDetector(
-          onTap: () => setState(() => isOpened = !isOpened),
-          child: isOpened
-              ? widget.jsonViewTheme.closeIcon
-              : widget.jsonViewTheme.openIcon,
-        ),
-        _buidItem(),
-      ],
-    );
+  Iterable get items {
+    return jsonObj.entries;
   }
 
-  Widget _buidItem() {
+  @override
+  List<Widget> buildJsonItems() {
+    return jsonObj.entries
+        .map(
+          (e) => JsonItem(
+            entry: e,
+            jsonPath: jsonPath.add(e.key),
+            jsonViewTheme: jsonViewTheme,
+          ),
+        )
+        .toList();
+  }
+
+  @override
+  JsonMapBuilderState createState() => JsonMapBuilderState();
+}
+
+class JsonMapBuilderState extends IterateBuilderState<JsonMapBuilder> {
+  @override
+  Widget buildItems() {
     if (!isOpened) {
       return ClosedJsonObjectItem(
         isList: false,
         jsonViewTheme: widget.jsonViewTheme,
-        type: 'Object',
+        count: widget.items.length,
       );
     }
-    final items = _buildJsonItems();
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: items,
-    );
-  }
 
-  List<Widget> _buildJsonItems() {
-    return widget.jsonObj.entries
-        .map(
-          (e) => JsonItem(
-            entry: e,
-            jsonViewTheme: widget.jsonViewTheme,
-          ),
-        )
-        .toList();
+    return super.buildItems();
   }
 }

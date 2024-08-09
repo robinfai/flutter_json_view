@@ -65,7 +65,7 @@ void canConvertTest(int index, String jsonString, {bool valid = true}) {
   test(
     'Test canConverToObject #$index',
     () {
-      final canConvert = JsonConverter.canConverToObject(jsonString);
+      final canConvert = JsonConverter.canConvertToObject(jsonString);
       expect(canConvert, valid);
     },
   );

@@ -1,6 +1,10 @@
 abstract class Typer {
   static bool isPrimitive(dynamic value) {
-    return value is double || value is int || value is String || value is bool;
+    return value is double ||
+        value is int ||
+        value is String ||
+        value is bool ||
+        value == null;
   }
 
   static bool isObject(dynamic value) {
