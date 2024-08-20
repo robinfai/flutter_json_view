@@ -5,7 +5,6 @@ import 'package:flutter_json_view/src/theme/json_view_theme.dart';
 import 'package:flutter_json_view/src/utils/typer.dart';
 import 'package:flutter_json_view/src/widgets/widgets.dart';
 
-
 class IterateBrackets {
   const IterateBrackets({
     required this.left,
@@ -63,7 +62,7 @@ class IterateBuilderState<T extends IterateBuilder>
   Widget buildObjectKey() {
     if (widget.jsonKey != null) {
       return Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        SelectableText(widget.jsonKey!, style: widget.jsonViewTheme.keyStyle),
+        Text(widget.jsonKey!, style: widget.jsonViewTheme.keyStyle),
         JsonViewSeparator(jsonViewTheme: widget.jsonViewTheme),
       ]);
     }
@@ -97,8 +96,20 @@ class IterateBuilderState<T extends IterateBuilder>
         Padding(
           padding: EdgeInsets.only(
               left: widget.jsonViewTheme.defaultTextStyle.fontSize!),
-          child: Text(
-              " ${widget.brackets.right}${widget.needPatchComma() ? comma : ''}",
+          child: Text.rich(
+              TextSpan(
+                text:
+                    " ${widget.brackets.right}${widget.needPatchComma() ? comma : ''}",
+                children: const [
+                  TextSpan(
+                    text: "\n ",
+                    style: TextStyle(
+                      fontSize: 0,
+                      height: 0,
+                    ),
+                  ),
+                ],
+              ),
               style: widget.jsonViewTheme.keyStyle),
         ),
       ],

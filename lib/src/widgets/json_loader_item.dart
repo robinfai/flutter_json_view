@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_json_view/flutter_json_view.dart';
 import 'package:flutter_json_view/src/builders/builders.dart';
 import 'package:flutter_json_view/src/builders/json_path.dart';
@@ -28,7 +29,11 @@ class _JsonLoaderItemState extends State<JsonLoaderItem> {
 
   @override
   Widget build(BuildContext context) {
-    return _commonBuilder?.build() ?? widget.jsonViewTheme.loadingWidget;
+    if (_commonBuilder != null) {
+      return SelectionArea(
+          child: _commonBuilder!.build());
+    }
+    return widget.jsonViewTheme.loadingWidget;
   }
 
   Future<void> _initializeBuilder() async {

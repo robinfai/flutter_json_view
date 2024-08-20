@@ -22,7 +22,7 @@ class PrimitiveBuilder extends StatelessWidget {
   Widget buildObjectKey() {
     if (jsonKey != null) {
       return Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        SelectableText(jsonKey!, style: _jsonViewTheme.keyStyle),
+        Text(jsonKey!, style: _jsonViewTheme.keyStyle),
         JsonViewSeparator(jsonViewTheme: _jsonViewTheme)
       ]);
     }
@@ -38,7 +38,19 @@ class PrimitiveBuilder extends StatelessWidget {
         children: [
           buildObjectKey(),
           _renderJsonWidgets(context),
-          SelectableText(jsonPath.path != null ? comma : '',
+          Text.rich(
+              TextSpan(
+                text: jsonPath.path != null ? comma : '',
+                children: const [
+                  TextSpan(
+                    text: "\n ",
+                    style: TextStyle(
+                      fontSize: 0,
+                      height: 0,
+                    ),
+                  ),
+                ],
+              ),
               style: _jsonViewTheme.keyStyle),
         ],
       ),
