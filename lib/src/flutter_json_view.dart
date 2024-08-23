@@ -92,13 +92,14 @@ class _JsonViewState extends State<JsonView> {
         break;
     }
     return Container(
-      width: double.infinity,
+      // width: double.infinity,
+      width: MediaQuery.of(context).size.width,
       padding: const EdgeInsets.all(10),
       color: widget._builder.jsonViewTheme.backgroundColor,
       child: SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
+        scrollDirection: Axis.vertical,
         child: SingleChildScrollView(
-          scrollDirection: Axis.vertical,
+          scrollDirection: Axis.horizontal,
           child: jsonView,
         ),
       ),
